@@ -197,7 +197,48 @@ WHERE (dept_code, salary) IN (SELECT dept_code,
 ORDER BY dept_code
 ;
 
+-- 각 직급별로 최소 급여를 받는 사원들의 사번, 직원명, 직급 코드, 급여 조회
+-- 각 직급별 최소 급여 조회
+SELECT MIN(salary)
+FROM employee
+GROUP BY job_code
+;						
 
+-- 다중행, 다중열 서브 쿼리를 사용해서 조회
+SELECT emp_id AS '사번',
+		 emp_name AS '직원명',
+		 job_code AS '직급 코드',
+		 salary AS '급여'
+FROM employee
+WHERE salary IN (SELECT MIN(salary)
+						FROM employee
+						GROUP BY job_code
+						)
+ORDER BY job_code
+;
+
+-- 인라인 뷰
+-- FROM 절에 서브 쿼리를 작성하고
+-- 서브 쿼리를 수행한 결과를 테이블 대신에 사용한다.
+SELECT A.*
+FROM (SELECT emp_id AS '사번',
+				 emp_name AS '이름',
+				 salary AS '급여',
+				 salary * 12 AS '연봉'
+		FROM employee
+		) A
+;
+
+-- employee 테이블에서 급여로 순위를 매겨서 출력
+SELECT A.num,
+		 A.emp_name,
+		 A.salary
+FROM (SELECT ROW_NUMBER() OVER(ORDER BY salary DESC) AS 'num',
+		 		 emp_name,
+		 		 salary
+		FROM employee) A
+WHERE A.num BETWEEN 6 AND 10
+;
 
 
 
