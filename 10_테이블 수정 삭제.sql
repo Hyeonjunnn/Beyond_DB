@@ -48,8 +48,21 @@ ALTER TABLE usertbl DROP COLUMN userid;
 
 SELECT * FROM usertbl;
 
+-- 실습 문제
+CREATE TABLE tb_department(
+	department_no VARCHAR(10),
+	department_name VARCHAR(20) NOT NULL,
+	category VARCHAR(20),
+	open_yn CHAR(1),
+	capacity INT,
+	PRIMARY KEY(department_no)
+);
 
-
+CREATE TABLE tb_student(
+	student_no VARCHAR(10) NOT NULL,
+	department_no VARCHAR(10) REFERENCES td_department(department_no),
+	student_name 
+);
 
 
 
