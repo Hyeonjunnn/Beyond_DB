@@ -50,7 +50,7 @@ SELECT * FROM usertbl;
 
 -- 실습 문제
 CREATE TABLE tb_department(
-	department_no VARCHAR(10),
+	department_no VARCHAR(10) NOT NULL,
 	department_name VARCHAR(20) NOT NULL,
 	category VARCHAR(20),
 	open_yn CHAR(1),
@@ -60,10 +60,42 @@ CREATE TABLE tb_department(
 
 CREATE TABLE tb_student(
 	student_no VARCHAR(10) NOT NULL,
-	department_no VARCHAR(10) REFERENCES td_department(department_no),
-	student_name 
+	department_no VARCHAR(10) NOT NULL REFERENCES td_department(department_no),
+	student_name VARCHAR(30) NOT NULL,
+    student_ssn VARCHAR(14) NOT NULL,
+    student_address VARCHAR(100),
+    entrance_date DATE,
+    absence_yn CHAR(1),
+    coach_professor_no VARCHAR(10) REFERENCES tb_professor(coach_proffesor_no),
+    PRIMARY KEY(student_no)
 );
 
+CREATE TABLE tb_class(
+	class_no VARCHAR(10) NOT NULL,
+    department_no VARCHAR(10) NOT NULL REFERENCES tb_department(department_no),
+    preattending_class_no VARCHAR(10) NOT NULL REFERENCES tb_class(preattending_class_no),
+    class_name VARCHAR(30) NOT NULL,
+    class_type VARCHAR(10),
+    PRIMARY KEY(class_no)
+);
 
+CREATE TABLE tb_professor(
+	professor_no VARCHAR(10) NOT NULL,
+    professor_name VARCHAR(30) NOT NULL,
+    professor_ssn VARCHAR(14),
+    professor_address VARCHAR(100),
+    department_no VARCHAR(10) REFERENCES tb_department(department_no),
+    PRIMARY KEY(professor_no)
+);
 
+CREATE TABLE tb_class_professor(
+	class_no VARCHAR(10) NOT NULL REFERENCES tb_class(class_no),
+    professor_no VARCHAR(10) NOT NULL REFERENCES tb_professor(professor_no)
+);
 
+CREATE TABLE tb_grade(
+	term_no VARCHAR(10) NOT NULL,
+    class_no VARCHAR(10) NOT NULL REFERENCES tb_class(class_no),
+    student_no VARCHAR(10) NOT NULL REFERENCES tb_student(student_no),
+    `point` DECIMAL(3,2)
+);
