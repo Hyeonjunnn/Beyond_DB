@@ -175,9 +175,34 @@ VALUES('USER1', '1234', '홍길동', 'vip');
 SELECT * FROM tb_member_grade;
 SELECT * FROM tb_member;
 
+-- CHECK 제약 조건
+DROP TABLE tb_member;
 
+CREATE TABLE tb_member(
+	mem_no INT AUTO_INCREMENT PRIMARY KEY,
+	mem_id VARCHAR(20) NOT NULL UNIQUE,
+	mem_pass VARCHAR(20) NOT NULL,
+	mem_name VARCHAR(15) NOT NULL,
+	gender CHAR(2) CHECK(gender IN ('남자', '여자')),
+	age TINYINT,
+	grade_code VARCHAR(10) REFERENCES tb_member_grade(grade_code),
+	enroll_date DATE DEFAULT CURDATE(),
+-- 	CHECK(age >= 0)
+-- 	CONSTRAINT ck_tb_member_age CHECK(age >= 0 and age <= 150)
+	CONSTRAINT ck_tb_member_age CHECK(age BETWEEN 0 AND 150)
+);
 
+-- 성별, 나이에 유효하지 않은 값들은 삽입이 불가능하다.
+INSERT INTO tb_member(mem_id, mem_pass, mem_name, gender, age, grade_code)
+VALUES('USER1', '1234', '홍길동', '남남', 36, 'vip');
 
+INSERT INTO tb_member(mem_id, mem_pass, mem_name, gender, age, grade_code)
+VALUES('USER2', '1234', '이몽룡', '남자', 30, NULL);
+
+INSERT INTO tb_member(mem_id, mem_pass, mem_name, gender, age, grade_code)
+VALUES('USER3', '1234', '성춘향', '여자', -28, 'silver');
+
+SELECT * FROM tb_member;
 
 
 
