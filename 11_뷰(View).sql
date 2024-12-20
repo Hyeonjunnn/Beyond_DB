@@ -149,8 +149,37 @@ WHERE emp_id = '200' -- 에러 발생
 
 SELECT * FROM v_emp_salary;
 
+-- 5. 뷰 옵션
+-- WITH CHECK OPTION
+-- 서브 쿼리에 기술된 조건에 부합하지 않는 값으로 수정하는 경우 오류가 발생한다.
+CREATE OR REPLACE VIEW v_employee
+AS (SELECT *
+	 FROM employee
+	 WHERE salary >= 3000000
+	)
+WITH CHECK OPTION
+;
 
+-- 선동일 사원의 급여를 200만원으로 변경
+-- 서브 쿼리의 조건에 부합하지 않기 때문에 변경이 불가능하다.
+UPDATE v_employee
+SET salary = 2000000
+WHERE emp_id = '200'
+;
 
+-- 선동일 사원의 급여를 400만원으로 변경
+-- 서브 쿼리의 조건에 부합하기 때문에 변경이 가능하다.
+UPDATE v_employee
+SET salary = 4000000
+WHERE emp_id = '200'
+;
 
+SELECT *
+FROM v_employee;
 
+SELECT *
+FROM employee;
 
+-- 6. 뷰 삭제
+DROP VIEW v_userbuyttb_departmentbl;
+DROP VIEW v_employee, v_emp_salary, v_job;
