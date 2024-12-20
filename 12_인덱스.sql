@@ -1,3 +1,5 @@
+-- https://dev.mysql.com/doc/index-other.html
+-- 'employee data' 다운
 -- cmd에서 'source employees.sql' 입력하여 employees 데이터베이스 생성
 
 -- 인덱스 실습
