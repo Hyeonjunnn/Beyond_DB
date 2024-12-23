@@ -157,3 +157,23 @@ DELIMITER ;
 
 CALL multiProc(6);
 
+-- 에러 처리 테스트
+DELIMITER $$
+CREATE OR REPLACE PROCEDURE errorProc()
+BEGIN
+	DECLARE CONTINUE HANDLER FOR 1146 
+		SELECT '테이블이 없어요ㅠㅠ' AS '메시지';
+	SELECT *
+	FROM noTable;
+END $$
+DELIMITER ;
+
+CALL errorProc();
+
+-- 프로시저 삭제
+DROP PROCEDURE empProc;
+DROP PROCEDURE errorProc;
+DROP PROCEDURE gradeProc;
+DROP PROCEDURE multiProc;
+DROP PROCEDURE sumProc;
+DROP PROCEDURE userProc;
